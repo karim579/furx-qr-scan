@@ -10,7 +10,7 @@
     <script>
         let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
         scanner.addListener('scan', function (content) {
-            fetch('https://script.google.com/macros/s/AKfycbxbQM8QiLVIasrpRf1e8fJujEC6w6R4dxq42_wI7r1eFRZVZLkqbm4k5GR2ssh16Gsv/exec?q=' + content)
+            fetch('https://script.google.com/macros/s/AKfycbwpKAt-Q8T5ULaRWHnryqUVsAgvN-f7mcsqn2Id3laj6mKiUmKE7jXPR_LZYkGQPfRL/exec?q=' + content)
                 .then(response => response.json())
                 .then(data => {
                     console.log(data);
@@ -20,7 +20,14 @@
 
         Instascan.Camera.getCameras().then(function (cameras) {
             if (cameras.length > 0) {
-                scanner.start(cameras[0]);
+                var selectedCamera = cameras[0];
+                for (var i = 0; i < cameras.length; i++) {
+                    if (cameras[i].name.indexOf('back') !== -1) {
+                        selectedCamera = cameras[i];
+                        break;
+                    }
+                }
+                scanner.start(selectedCamera);
             } else {
                 console.error('No cameras found.');
             }
